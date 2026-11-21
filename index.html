@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AIに覚えてもらう プロフィール作成</title>
+<title>自分の取り扱い説明書メーカー｜AIに渡すプロフィール作成</title>
 <style>
 :root{--bg:#f4f6fb;--card:#ffffff;--ink:#26303e;--sub:#6b7686;--accent:#4a6fd4;--line:#dde3ee;--warn:#c0392b;--radius:14px;}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -47,8 +47,8 @@ footer{text-align:center;color:var(--sub);font-size:.78rem;padding:0 16px 30px;}
 </head>
 <body>
 <header>
-<h1>AIに覚えてもらう プロフィール作成</h1>
-<p>フォームに入力するだけで、ChatGPTやClaudeなどのAIに貼り付けて<br>「私のことを覚えて」と渡せる自己紹介文ができます。</p>
+<h1>自分の取り扱い説明書メーカー</h1>
+<p>自分の情報をありったけ詰め込んだ「取り扱い説明書」を作るアプリ。<br>一度作れば使い回せて、ChatGPTやClaudeなどのAIに貼るだけで「私のことを覚えて」と渡せます。</p>
 </header>
 <main>
 <section class="card">
@@ -199,7 +199,7 @@ footer{text-align:center;color:var(--sub);font-size:.78rem;padding:0 16px 30px;}
 <p class="saved-note">入力内容はこのブラウザに自動保存されます（サーバーには送られません）。</p>
 </section>
 </main>
-<footer>AIプロフィール作成｜入力内容はお使いのブラウザ内だけに保存されます</footer>
+<footer>自分の取り扱い説明書メーカー｜入力内容はお使いのブラウザ内だけに保存されます</footer>
 <div class="toast" id="toast">コピーしました</div>
 <script>
 "use strict";
@@ -213,7 +213,7 @@ function head(s){ return LB + s + RB; }
 function buildText(){
   const f = state.fields;
   const out = [];
-  out.push("はじめまして。私のことを覚えてください。");
+  out.push("これは私の取り扱い説明書です。私のことを覚えてください。");
   out.push("");
   const basics = [];
   if(f["name"]) basics.push("名前は"+f["name"]+"です。");

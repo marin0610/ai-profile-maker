@@ -36,6 +36,12 @@ button:active{transform:translateY(1px);}
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:#26303e;color:#fff;padding:10px 18px;border-radius:999px;font-size:.9rem;opacity:0;pointer-events:none;transition:.25s;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 .danger{color:var(--warn);border-color:#ecc9c4;}
+.card.diag{border:2px solid var(--accent);background:#fbfcff;}
+.diag-progress{font-size:.8rem;color:var(--sub);margin:8px 0 4px;}
+.diag-q{font-weight:700;font-size:1rem;margin:6px 0 10px;}
+.diag-opt{display:block;width:100%;text-align:left;padding:12px 14px;margin:0 0 8px;font-size:.95rem;border-radius:12px;}
+.diag-result{text-align:center;padding:10px 0 4px;}
+.diag-type{font-size:1.7rem;font-weight:800;letter-spacing:.06em;color:var(--accent);margin:4px 0;}
 footer{text-align:center;color:var(--sub);font-size:.78rem;padding:0 16px 30px;}
 </style>
 </head>
@@ -167,6 +173,13 @@ footer{text-align:center;color:var(--sub);font-size:.78rem;padding:0 16px 30px;}
 <label for="f-tone-free">その他、AIにお願いしたいこと<span class="opt">任意</span></label>
 <textarea id="f-tone-free" placeholder="例：大事な決め事は材料だけ出して、決めるのは私に任せてほしい"></textarea>
 </section>
+<section class="card diag">
+<h2><span class="no">★</span>おまけ：簡易MBTI診断</h2>
+<p class="hint">12問の2択に答えると、目安のMBTIタイプが出ます。結果はプロフィールに反映できます。簡易診断なので、目安として楽しんでください。</p>
+<div id="diag-area">
+<button id="btn-diag-start" class="primary">診断をはじめる</button>
+</div>
+</section>
 <section class="card">
 <h2><span class="no">7</span>自由記入</h2>
 <label for="f-free">その他、覚えておいてほしいこと<span class="opt">任意</span></label>
@@ -193,7 +206,7 @@ footer{text-align:center;color:var(--sub);font-size:.78rem;padding:0 16px 30px;}
 const KEY = "ai-profile-maker-v1";
 const LB = "【", RB = "】";
 const FIELDS = ["name","call","age","area","birth","blood","mbti","job","like-food","like-hobby","like-other","ng-food","allergy","avoid","care","traits-free","goal","rules","tone-free","free"];
-const state = { fields:{}, tones:[], traits:[], ngs:[] };
+const state = { fields:{}, tones:[], traits:[], ngs:[], diagType:"" };
 function $(id){ return document.getElementById(id); }
 function linesToList(text){ return text.split("\n").map(s=>s.trim()).filter(Boolean).map(s=>"・"+s).join("\n"); }
 function head(s){ return LB + s + RB; }
@@ -225,7 +238,8 @@ function buildText(){
   if(ngs.length){ out.push(head("苦手なもの・避けてほしいこと")); out.push(ngs.join("\n")); out.push(""); }
   const traits = state.traits.slice();
   if(f["traits-free"] && f["traits-free"].trim()) traits.push(f["traits-free"].trim());
-  if(traits.length){ out.push(head("性格・特徴")); out.push(traits.map(s=>"・"+s).join("\n")); out.push(""); }
+  if(state.diagType && TYPES[state.diagType]) traits.push("簡易MBTI診断の結果："+state.diagType+"（"+TYPES[state.diagType]+"）");
+if(traits.length){ out.push(head("性格・特徴")); out.push(traits.map(s=>"・"+s).join("\n")); out.push(""); }
   if(f["goal"]){ out.push(head("目標・今がんばっていること")); out.push(f["goal"].trim()); out.push(""); }
   if(f["rules"]){ out.push(head("こだわり・絶対に外せない条件")); out.push(f["rules"].trim()); out.push(""); }
   const tones = state.tones.slice();
@@ -245,6 +259,7 @@ function load(){
     const data = JSON.parse(raw);
     if(data && data.fields) state.fields = data.fields;
     ["tones","traits","ngs"].forEach(k=>{ if(data && Array.isArray(data[k])) state[k] = data[k]; });
+if(data && typeof data.diagType === "string") state.diagType = data.diagType;
   }catch(e){}
 }
 function bindChips(containerId, key){
@@ -298,7 +313,7 @@ $("btn-download").addEventListener("click", ()=>{
 });
 $("btn-clear").addEventListener("click", ()=>{
   if(!confirm("入力内容を全部消しますか？")) return;
-  state.fields = {}; state.tones = []; state.traits = []; state.ngs = [];
+  state.fields = {}; state.tones = []; state.traits = []; state.ngs = []; state.diagType = ""; showDiagStart();
   try{ localStorage.removeItem(KEY); }catch(e){}
   applyToForm(); render();
   toast("消去しました");
@@ -318,7 +333,88 @@ $("btn-sample").addEventListener("click", ()=>{
   save(); applyToForm(); render();
   toast("記入例を入れました");
 });
+const QUESTIONS = [
+{q:"休みの日はどう過ごす？", a:["友達と出かけて過ごす","E"], b:["家でゆっくり過ごす","I"]},
+{q:"初対面の人とは？", a:["自分から話しかける","E"], b:["話しかけられるのを待つことが多い","I"]},
+{q:"元気が出るのはどっち？", a:["みんなでワイワイした後","E"], b:["1人で好きなことをした後","I"]},
+{q:"説明を聞くとき大事なのは？", a:["具体例や事実","S"], b:["全体のイメージや可能性","N"]},
+{q:"興味が湧くのは？", a:["今すぐ役立つこと","S"], b:["将来の夢やアイデア","N"]},
+{q:"作業の進め方は？", a:["手順通りに確実に","S"], b:["ひらめきで工夫しながら","N"]},
+{q:"決めるとき優先するのは？", a:["正しいかどうか","T"], b:["気持ちや人間関係","F"]},
+{q:"友達の相談に乗るときは？", a:["解決策を考える","T"], b:["まず共感する","F"]},
+{q:"言われて嬉しいのは？", a:["頼りになるね","T"], b:["優しいね","F"]},
+{q:"旅行の計画は？", a:["事前にしっかり立てる","J"], b:["行き先だけ決めて、あとは気分で","P"]},
+{q:"締め切りがあると？", a:["早めに終わらせる","J"], b:["直前に集中する","P"]},
+{q:"予定や持ち物は？", a:["整理されていると落ち着く","J"], b:["自由な方が楽","P"]}
+];
+const TYPES = {
+"INTJ":"「建築家」一人でじっくり考え、計画を立てて進めるのが得意",
+"INTP":"「論理学者」好奇心が強く、物事の仕組みを考えるのが好き",
+"ENTJ":"「指揮官」リーダーシップがあり、決断が早い",
+"ENTP":"「討論者」アイデア豊富で、新しいことが大好き",
+"INFJ":"「提唱者」人の気持ちに敏感で、理想を大切にする",
+"INFP":"「仲介者」優しくて、自分の価値観を大切にする",
+"ENFJ":"「主人公」人のために動ける、面倒見のいいタイプ",
+"ENFP":"「運動家」明るく好奇心旺盛で、人と関わるのが好き",
+"ISTJ":"「管理者」真面目で責任感が強く、コツコツ進める",
+"ISFJ":"「擁護者」思いやりがあり、縁の下の力持ち",
+"ESTJ":"「幹部」しっかり者で、物事をまとめるのが得意",
+"ESFJ":"「領事」社交的で、周りへの気配り上手",
+"ISTP":"「巨匠」器用で、自分のペースで物事を極める",
+"ISFP":"「冒険家」感性豊かで、自由を大切にする",
+"ESTP":"「起業家」行動力があり、その場を楽しむのが得意",
+"ESFP":"「エンターテイナー」明るく場を盛り上げるムードメーカー"
+};
+let diagIdx = 0;
+let diagScore = {};
+function showDiagStart(){
+  const area = $("diag-area");
+  let html = '<button id="btn-diag-start" class="primary">診断をはじめる</button>';
+  if(state.diagType && TYPES[state.diagType]){
+    html += '<p class="diag-progress">前回の結果：'+state.diagType+"（"+TYPES[state.diagType]+"）をプロフィールに入れています</p>";
+  }
+  area.innerHTML = html;
+  $("btn-diag-start").addEventListener("click", startDiag);
+}
+function startDiag(){
+  diagIdx = 0;
+  diagScore = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+  showDiagQuestion();
+}
+function showDiagQuestion(){
+  const area = $("diag-area");
+  if(diagIdx >= QUESTIONS.length){ showDiagResult(); return; }
+  const item = QUESTIONS[diagIdx];
+  area.innerHTML = '<p class="diag-progress">質問 '+(diagIdx+1)+" / "+QUESTIONS.length+'</p>'
+    + '<p class="diag-q">'+item.q+'</p>'
+    + '<button class="diag-opt" id="diag-a">'+item.a[0]+'</button>'
+    + '<button class="diag-opt" id="diag-b">'+item.b[0]+'</button>';
+  $("diag-a").addEventListener("click", ()=>{ diagScore[item.a[1]]++; diagIdx++; showDiagQuestion(); });
+  $("diag-b").addEventListener("click", ()=>{ diagScore[item.b[1]]++; diagIdx++; showDiagQuestion(); });
+}
+function showDiagResult(){
+  const type = (diagScore.E >= diagScore.I ? "E" : "I")
+    + (diagScore.S >= diagScore.N ? "S" : "N")
+    + (diagScore.T >= diagScore.F ? "T" : "F")
+    + (diagScore.J >= diagScore.P ? "J" : "P");
+  const area = $("diag-area");
+  area.innerHTML = '<div class="diag-result"><p class="diag-progress">あなたのタイプは</p>'
+    + '<p class="diag-type">'+type+'</p>'
+    + '<p>'+TYPES[type]+'</p>'
+    + '<div class="actions" style="justify-content:center">'
+    + '<button class="primary" id="diag-apply">この結果をプロフィールに入れる</button>'
+    + '<button id="diag-retry">もう一度診断する</button>'
+    + '</div></div>';
+  $("diag-apply").addEventListener("click", ()=>{
+    state.diagType = type;
+    state.fields["mbti"] = type;
+    save(); applyToForm(); render(); showDiagStart();
+    toast("プロフィールに入れました");
+  });
+  $("diag-retry").addEventListener("click", startDiag);
+}
 load();
+showDiagStart();
 applyToForm();
 bindChips("tone-chips","tones");
 bindChips("trait-chips","traits");

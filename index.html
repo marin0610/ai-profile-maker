@@ -5,50 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AIに覚えてもらう プロフィール作成</title>
 <style>
-:root{
---bg:#f4f6fb; --card:#ffffff; --ink:#26303e; --sub:#6b7686;
---accent:#4a6fd4; --accent-soft:#e8eeff; --line:#dde3ee;
---warn:#c0392b; --radius:14px;
-}
-*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-body{margin:0; font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic UI","Noto Sans JP",sans-serif;
-background:var(--bg); color:var(--ink); line-height:1.65; font-size:16px;}
-header{background:linear-gradient(135deg,#4a6fd4,#7a5fd0); color:#fff; padding:26px 18px 22px; text-align:center;}
-header h1{margin:0 0 6px; font-size:1.35rem; letter-spacing:.02em;}
-header p{margin:0; font-size:.88rem; opacity:.92;}
-main{max-width:760px; margin:0 auto; padding:16px 14px 60px;}
-.card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
-padding:16px 16px 8px; margin-bottom:14px; box-shadow:0 1px 3px rgba(30,40,60,.05);}
-.card h2{margin:0 0 4px; font-size:1.02rem; display:flex; align-items:center; gap:8px;}
-.card h2.no{background:var(--accent); color:#fff; width:22px; height:22px; border-radius:50%;
-display:inline-flex; align-items:center; justify-content:center; font-size:.78rem; flex:none;}
-.card.hint{margin:0 0 10px; font-size:.8rem; color:var(--sub);}
-label{display:block; font-size:.85rem; font-weight:600; margin:12px 0 4px;}
-label.opt{font-weight:400; color:var(--sub); font-size:.75rem; margin-left:4px;}
-input[type=text], select, textarea{width:100%; padding:10px 12px; border:1.5px solid var(--line);
-border-radius:10px; font-size:16px; font-family:inherit; background:#fcfdff; color:var(--ink);}
-input[type=text]:focus, select:focus, textarea:focus{outline:none; border-color:var(--accent); background:#fff;}
-textarea{resize:vertical; min-height:56px;}
-.row{display:flex; gap:10px;}.row > div{flex:1;}
-.chips{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 10px;}
-.chip{border:1.5px solid var(--line); background:#fff; color:var(--ink); border-radius:999px;
-padding:6px 13px; font-size:.85rem; cursor:pointer; user-select:none;}
-.chip.on{background:var(--accent); border-color:var(--accent); color:#fff; font-weight:600;}
-.actions{display:flex; flex-wrap:wrap; gap:8px; margin:4px 0 12px;}
-button{font-family:inherit; cursor:pointer; border-radius:10px; border:1.5px solid var(--line);
-background:#fff; color:var(--ink); padding:9px 14px; font-size:.88rem;}
-button.primary{background:var(--accent); border-color:var(--accent); color:#fff; font-weight:700;}
-button.big{width:100%; padding:14px; font-size:1rem; border-radius:12px;}
+:root{--bg:#f4f6fb;--card:#ffffff;--ink:#26303e;--sub:#6b7686;--accent:#4a6fd4;--line:#dde3ee;--warn:#c0392b;--radius:14px;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{margin:0;font-family:-apple-system,"Hiragino Kaku Gothic ProN","Yu Gothic UI","Noto Sans JP",sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:16px;}
+header{background:linear-gradient(135deg,#4a6fd4,#7a5fd0);color:#fff;padding:26px 18px 22px;text-align:center;}
+header h1{margin:0 0 6px;font-size:1.35rem;letter-spacing:.02em;}
+header p{margin:0;font-size:.88rem;opacity:.92;}
+main{max-width:760px;margin:0 auto;padding:16px 14px 60px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 8px;margin-bottom:14px;box-shadow:0 1px 3px rgba(30,40,60,.05);}
+.card h2{margin:0 0 4px;font-size:1.02rem;display:flex;align-items:center;gap:8px;}
+.card h2 .no{background:var(--accent);color:#fff;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.78rem;flex:none;}
+.card .hint{margin:0 0 10px;font-size:.8rem;color:var(--sub);}
+label{display:block;font-size:.85rem;font-weight:600;margin:12px 0 4px;}
+label .opt{font-weight:400;color:var(--sub);font-size:.75rem;margin-left:4px;}
+input[type=text],input[type=date],select,textarea{width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;font-size:16px;font-family:inherit;background:#fcfdff;color:var(--ink);}
+input[type=text]:focus,input[type=date]:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);background:#fff;}
+textarea{resize:vertical;min-height:56px;}
+.row{display:flex;gap:10px;}.row>div{flex:1;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px;}
+.chip{border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:999px;padding:6px 13px;font-size:.85rem;cursor:pointer;user-select:none;}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;}
+.chip.ng.on{background:#b04a4a;border-color:#b04a4a;}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 12px;}
+button{font-family:inherit;cursor:pointer;border-radius:10px;border:1.5px solid var(--line);background:#fff;color:var(--ink);padding:9px 14px;font-size:.88rem;}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;}
+button.big{width:100%;padding:14px;font-size:1rem;border-radius:12px;}
 button:active{transform:translateY(1px);}
-#preview{white-space:pre-wrap; word-break:break-word; background:#f8faff; border:1.5px dashed var(--accent);
-border-radius:12px; padding:14px; font-size:.92rem; min-height:120px;}
-.saved-note{font-size:.78rem; color:var(--sub); text-align:center; margin:10px 0 0;}
-.toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(20px);
-background:#26303e; color:#fff; padding:10px 18px; border-radius:999px; font-size:.9rem;
-opacity:0; pointer-events:none; transition:.25s;}
-.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
-.danger{color:var(--warn); border-color:#ecc9c4;}
-footer{text-align:center; color:var(--sub); font-size:.78rem; padding:0 16px 30px;}
+#preview{white-space:pre-wrap;word-break:break-word;background:#f8faff;border:1.5px dashed var(--accent);border-radius:12px;padding:14px;font-size:.92rem;min-height:120px;}
+.saved-note{font-size:.78rem;color:var(--sub);text-align:center;margin:10px 0 0;}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:#26303e;color:#fff;padding:10px 18px;border-radius:999px;font-size:.9rem;opacity:0;pointer-events:none;transition:.25s;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.danger{color:var(--warn);border-color:#ecc9c4;}
+footer{text-align:center;color:var(--sub);font-size:.78rem;padding:0 16px 30px;}
 </style>
 </head>
 <body>
@@ -57,7 +45,6 @@ footer{text-align:center; color:var(--sub); font-size:.78rem; padding:0 16px 30p
 <p>フォームに入力するだけで、ChatGPTやClaudeなどのAIに貼り付けて<br>「私のことを覚えて」と渡せる自己紹介文ができます。</p>
 </header>
 <main>
-
 <section class="card">
 <h2><span class="no">1</span>基本情報</h2>
 <p class="hint">書きたくない項目は空欄でOKです。空欄のところは文章に出ません。</p>
@@ -79,21 +66,40 @@ footer{text-align:center; color:var(--sub); font-size:.78rem; padding:0 16px 30p
 <input type="text" id="f-area" placeholder="例：関西">
 </div>
 </div>
+<div class="row">
+<div>
+<label for="f-birth">生年月日<span class="opt">任意</span></label>
+<input type="date" id="f-birth">
+</div>
+<div>
+<label for="f-blood">血液型<span class="opt">任意</span></label>
+<select id="f-blood">
+<option value="">書かない</option>
+<option>A型</option><option>B型</option><option>O型</option><option>AB型</option>
+</select>
+</div>
+</div>
+<label for="f-mbti">MBTI<span class="opt">任意</span></label>
+<select id="f-mbti">
+<option value="">書かない</option>
+<option>INTJ</option><option>INTP</option><option>ENTJ</option><option>ENTP</option>
+<option>INFJ</option><option>INFP</option><option>ENFJ</option><option>ENFP</option>
+<option>ISTJ</option><option>ISFJ</option><option>ESTJ</option><option>ESFJ</option>
+<option>ISTP</option><option>ISFP</option><option>ESTP</option><option>ESFP</option>
+</select>
 <label for="f-job">仕事・やっていること<span class="opt">任意</span></label>
 <input type="text" id="f-job" placeholder="例：事務職を目指して転職活動中">
 </section>
-
 <section class="card">
 <h2><span class="no">2</span>好きなもの</h2>
 <p class="hint">1行に1つずつ書くと、読みやすい文章になります。</p>
 <label for="f-like-food">好きな食べ物</label>
-<textarea id="f-like-food" placeholder="例：いちごのショートケーキ&#10;カレー"></textarea>
+<textarea id="f-like-food" placeholder="例：いちごのショートケーキ"></textarea>
 <label for="f-like-hobby">趣味・好きなこと</label>
-<textarea id="f-like-hobby" placeholder="例：ゲーム&#10;猫カフェ巡り"></textarea>
+<textarea id="f-like-hobby" placeholder="例：ゲーム"></textarea>
 <label for="f-like-other">推し・その他の好きなもの<span class="opt">任意</span></label>
 <textarea id="f-like-other" placeholder="例：好きなアーティストや作品など"></textarea>
 </section>
-
 <section class="card">
 <h2><span class="no">3</span>苦手なもの・避けてほしいこと</h2>
 <p class="hint">AIに提案で避けてもらいたいものを書いておくと便利です。</p>
@@ -103,39 +109,69 @@ footer{text-align:center; color:var(--sub); font-size:.78rem; padding:0 16px 30p
 <textarea id="f-allergy" placeholder="例：猫アレルギーがあります"></textarea>
 <label for="f-avoid">提案で避けてほしいこと<span class="opt">任意</span></label>
 <textarea id="f-avoid" placeholder="例：高額な提案は避けてほしい"></textarea>
+<label for="f-care">配慮してほしいこと<span class="opt">任意</span></label>
+<textarea id="f-care" placeholder="例：触れてほしくない話題、苦手な場面、トラウマなど"></textarea>
 </section>
-
 <section class="card">
-<h2><span class="no">4</span>目標・今がんばっていること</h2>
+<h2><span class="no">4</span>性格・特徴</h2>
+<p class="hint">当てはまるものをタップしてください（複数OK）。</p>
+<div class="chips" id="trait-chips">
+<span class="chip" data-v="明るい性格">明るい</span>
+<span class="chip" data-v="好奇心旺盛">好奇心旺盛</span>
+<span class="chip" data-v="直感で動くタイプ">直感で動く</span>
+<span class="chip" data-v="計画を立てるのが好き">計画を立てるのが好き</span>
+<span class="chip" data-v="慎重派">慎重派</span>
+<span class="chip" data-v="マイペース">マイペース</span>
+<span class="chip" data-v="人見知りしない">人見知りしない</span>
+<span class="chip" data-v="負けず嫌い">負けず嫌い</span>
+<span class="chip" data-v="飽きっぽいところがある">飽きっぽい</span>
+<span class="chip" data-v="こだわりが強い">こだわりが強い</span>
+<span class="chip" data-v="涙もろい">涙もろい</span>
+<span class="chip" data-v="褒められると伸びるタイプ">褒められると伸びる</span>
+<span class="chip" data-v="1人の時間も大事にしたい">1人の時間も大事</span>
+</div>
+<label for="f-traits-free">自分の特徴（自由記入）<span class="opt">任意</span></label>
+<textarea id="f-traits-free" placeholder="例：決め方は気分と直感が先で、理由はあとからついてきます"></textarea>
+</section>
+<section class="card">
+<h2><span class="no">5</span>目標・今がんばっていること</h2>
 <label for="f-goal">目標や取り組み中のこと</label>
 <textarea id="f-goal" placeholder="例：来年の引っ越しに向けて貯金中"></textarea>
 <label for="f-rules">こだわり・絶対に外せない条件<span class="opt">任意</span></label>
-<textarea id="f-rules" placeholder="例：提案は予算○円以内で&#10;選択肢は3つまで"></textarea>
+<textarea id="f-rules" placeholder="例：提案は予算○円以内で"></textarea>
 </section>
-
 <section class="card">
-<h2><span class="no">5</span>AIへの話し方の好み</h2>
-<p class="hint">当てはまるものをタップしてください（複数OK）。</p>
+<h2><span class="no">6</span>AIへのお願い</h2>
+<p class="hint">話し方の好みは当てはまるものをタップしてください（複数OK）。</p>
 <div class="chips" id="tone-chips">
-<span class="chip" data-tone="タメ口で話してほしい">タメ口で話してほしい</span>
-<span class="chip" data-tone="敬語で丁寧に話してほしい">敬語で丁寧に</span>
-<span class="chip" data-tone="短めに簡潔に答えてほしい">短めに簡潔に</span>
-<span class="chip" data-tone="理由も含めて詳しく説明してほしい">詳しく説明して</span>
-<span class="chip" data-tone="選択肢を出して提案してほしい">選択肢を出して</span>
-<span class="chip" data-tone="絵文字は少なめにしてほしい">絵文字は少なめ</span>
-<span class="chip" data-tone="忖度せず率直に意見を言ってほしい">忖度なしで率直に</span>
-<span class="chip" data-tone="質問は一度に1つずつしてほしい">質問は1つずつ</span>
+<span class="chip" data-v="タメ口で話してほしい">タメ口で話してほしい</span>
+<span class="chip" data-v="敬語で丁寧に話してほしい">敬語で丁寧に</span>
+<span class="chip" data-v="短めに簡潔に答えてほしい">短めに簡潔に</span>
+<span class="chip" data-v="理由も含めて詳しく説明してほしい">詳しく説明して</span>
+<span class="chip" data-v="選択肢を出して提案してほしい">選択肢を出して</span>
+<span class="chip" data-v="絵文字は少なめにしてほしい">絵文字は少なめ</span>
+<span class="chip" data-v="忖度せず率直に意見を言ってほしい">忖度なしで率直に</span>
+<span class="chip" data-v="質問は一度に1つずつしてほしい">質問は1つずつ</span>
+</div>
+<p class="hint">やってほしくないこと・NG（複数OK）</p>
+<div class="chips" id="ng-chips">
+<span class="chip ng" data-v="勝手に決めないでほしい">勝手に決めないで</span>
+<span class="chip ng" data-v="長すぎる説明はしないでほしい">長すぎる説明はNG</span>
+<span class="chip ng" data-v="説教っぽくしないでほしい">説教っぽいのはNG</span>
+<span class="chip ng" data-v="上から目線で話さないでほしい">上から目線はNG</span>
+<span class="chip ng" data-v="否定から入らないでほしい">否定から入らないで</span>
+<span class="chip ng" data-v="専門用語ばかり使わないでほしい">専門用語だらけはNG</span>
+<span class="chip ng" data-v="同じ質問を繰り返さないでほしい">同じ質問の繰り返しNG</span>
+<span class="chip ng" data-v="プライベートを詮索しないでほしい">詮索しないで</span>
 </div>
 <label for="f-tone-free">その他、AIにお願いしたいこと<span class="opt">任意</span></label>
 <textarea id="f-tone-free" placeholder="例：大事な決め事は材料だけ出して、決めるのは私に任せてほしい"></textarea>
 </section>
-
 <section class="card">
-<h2><span class="no">6</span>自由記入</h2>
+<h2><span class="no">7</span>自由記入</h2>
 <label for="f-free">その他、覚えておいてほしいこと<span class="opt">任意</span></label>
 <textarea id="f-free" style="min-height:84px" placeholder="例：家族構成、ペット、記念日など"></textarea>
 </section>
-
 <section class="card">
 <h2><span class="no">✓</span>できあがり</h2>
 <p class="hint">入力すると自動で文章が作られます。AIチャットの最初のメッセージに貼り付けてください。</p>
@@ -149,151 +185,144 @@ footer{text-align:center; color:var(--sub); font-size:.78rem; padding:0 16px 30p
 </div>
 <p class="saved-note">入力内容はこのブラウザに自動保存されます（サーバーには送られません）。</p>
 </section>
-
 </main>
 <footer>AIプロフィール作成｜入力内容はお使いのブラウザ内だけに保存されます</footer>
 <div class="toast" id="toast">コピーしました</div>
-
 <script>
 "use strict";
 const KEY = "ai-profile-maker-v1";
-const FIELDS = ["name","call","age","area","job","like-food","like-hobby","like-other",
-"ng-food","allergy","avoid","goal","rules","tone-free","free"];
-const state = { fields:{}, tones:[]};
-
-function $(id){ return document.getElementById(id);}
-function linesToList(text){
-return text.split("\n").map(s=>s.trim()).filter(Boolean).map(s=>"・"+s).join("\n");
-}
+const LB = "【", RB = "】";
+const FIELDS = ["name","call","age","area","birth","blood","mbti","job","like-food","like-hobby","like-other","ng-food","allergy","avoid","care","traits-free","goal","rules","tone-free","free"];
+const state = { fields:{}, tones:[], traits:[], ngs:[] };
+function $(id){ return document.getElementById(id); }
+function linesToList(text){ return text.split("\n").map(s=>s.trim()).filter(Boolean).map(s=>"・"+s).join("\n"); }
+function head(s){ return LB + s + RB; }
 function buildText(){
-const f = state.fields;
-const out = [];
-out.push("はじめまして。私のことを覚えてください。");
-out.push("");
-const basics = [];
-if(f["name"]) basics.push("名前は"+f["name"]+"です。");
-if(f["call"]) basics.push("「"+f["call"]+"」と呼んでください。");
-if(f["age"]) basics.push(f["age"]+"です。");
-if(f["area"]) basics.push(f["area"]+"に住んでいます。");
-if(f["job"]) basics.push(f["job"]+"。");
-if(basics.length){ out.push(""); out.push(basics.join("")); out.push("");}
-
-const likes = [];
-if(f["like-food"]) likes.push("好きな食べ物：\n"+linesToList(f["like-food"]));
-if(f["like-hobby"]) likes.push("趣味・好きなこと：\n"+linesToList(f["like-hobby"]));
-if(f["like-other"]) likes.push("推し・その他の好きなもの：\n"+linesToList(f["like-other"]));
-if(likes.length){ out.push(""); out.push(likes.join("\n")); out.push("");}
-
-const ngs = [];
-if(f["ng-food"]) ngs.push("苦手な食べ物・食材：\n"+linesToList(f["ng-food"]));
-if(f["allergy"]) ngs.push("アレルギー・体調のこと：\n"+linesToList(f["allergy"]));
-if(f["avoid"]) ngs.push("提案で避けてほしいこと：\n"+linesToList(f["avoid"]));
-if(ngs.length){ out.push(""); out.push(ngs.join("\n")); out.push("");}
-
-if(f["goal"]){ out.push(""); out.push(f["goal"].trim()); out.push("");}
-if(f["rules"]){ out.push(""); out.push(f["rules"].trim()); out.push("");}
-
-const tones = state.tones.slice();
-if(f["tone-free"] && f["tone-free"].trim()) tones.push(f["tone-free"].trim());
-if(tones.length){ out.push(""); out.push(tones.map(s=>"・"+s).join("\n")); out.push("");}
-
-if(f["free"]){ out.push(""); out.push(f["free"].trim()); out.push("");}
-
-out.push("以上のことを踏まえて、これから相談に乗ってください。よろしくお願いします。");
-return out.join("\n");
+  const f = state.fields;
+  const out = [];
+  out.push("はじめまして。私のことを覚えてください。");
+  out.push("");
+  const basics = [];
+  if(f["name"]) basics.push("名前は"+f["name"]+"です。");
+  if(f["call"]) basics.push("「"+f["call"]+"」と呼んでください。");
+  if(f["age"]) basics.push(f["age"]+"です。");
+  if(f["area"]) basics.push(f["area"]+"に住んでいます。");
+  if(f["birth"]){ const p = f["birth"].split("-"); if(p.length === 3) basics.push("生年月日は"+Number(p[0])+"年"+Number(p[1])+"月"+Number(p[2])+"日です。"); }
+  if(f["blood"]) basics.push("血液型は"+f["blood"]+"です。");
+  if(f["mbti"]) basics.push("MBTIは"+f["mbti"]+"です。");
+  if(f["job"]) basics.push(f["job"]+"。");
+  if(basics.length){ out.push(head("基本情報")); out.push(basics.join("")); out.push(""); }
+  const likes = [];
+  if(f["like-food"]) likes.push("好きな食べ物：\n"+linesToList(f["like-food"]));
+  if(f["like-hobby"]) likes.push("趣味・好きなこと：\n"+linesToList(f["like-hobby"]));
+  if(f["like-other"]) likes.push("推し・その他の好きなもの：\n"+linesToList(f["like-other"]));
+  if(likes.length){ out.push(head("好きなもの")); out.push(likes.join("\n")); out.push(""); }
+  const ngs = [];
+  if(f["ng-food"]) ngs.push("苦手な食べ物・食材：\n"+linesToList(f["ng-food"]));
+  if(f["allergy"]) ngs.push("アレルギー・体調のこと：\n"+linesToList(f["allergy"]));
+  if(f["avoid"]) ngs.push("提案で避けてほしいこと：\n"+linesToList(f["avoid"]));
+  if(f["care"]) ngs.push("配慮してほしいこと：\n"+linesToList(f["care"]));
+  if(ngs.length){ out.push(head("苦手なもの・避けてほしいこと")); out.push(ngs.join("\n")); out.push(""); }
+  const traits = state.traits.slice();
+  if(f["traits-free"] && f["traits-free"].trim()) traits.push(f["traits-free"].trim());
+  if(traits.length){ out.push(head("性格・特徴")); out.push(traits.map(s=>"・"+s).join("\n")); out.push(""); }
+  if(f["goal"]){ out.push(head("目標・今がんばっていること")); out.push(f["goal"].trim()); out.push(""); }
+  if(f["rules"]){ out.push(head("こだわり・絶対に外せない条件")); out.push(f["rules"].trim()); out.push(""); }
+  const tones = state.tones.slice();
+  if(f["tone-free"] && f["tone-free"].trim()) tones.push(f["tone-free"].trim());
+  if(tones.length){ out.push(head("話し方のお願い")); out.push(tones.map(s=>"・"+s).join("\n")); out.push(""); }
+  if(state.ngs.length){ out.push(head("やってほしくないこと・NG")); out.push(state.ngs.map(s=>"・"+s).join("\n")); out.push(""); }
+  if(f["free"]){ out.push(head("その他")); out.push(f["free"].trim()); out.push(""); }
+  out.push("以上のことを踏まえて、これから相談に乗ってください。よろしくお願いします。");
+  return out.join("\n");
 }
-function render(){
-$("preview").textContent = buildText();
-}
-function save(){
-try{ localStorage.setItem(KEY, JSON.stringify(state));}catch(e){}
-}
+function render(){ $("preview").textContent = buildText(); }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
 function load(){
-try{
-const raw = localStorage.getItem(KEY);
-if(!raw) return;
-const data = JSON.parse(raw);
-if(data && data.fields) state.fields = data.fields;
-if(data && Array.isArray(data.tones)) state.tones = data.tones;
-}catch(e){}
+  try{
+    const raw = localStorage.getItem(KEY);
+    if(!raw) return;
+    const data = JSON.parse(raw);
+    if(data && data.fields) state.fields = data.fields;
+    ["tones","traits","ngs"].forEach(k=>{ if(data && Array.isArray(data[k])) state[k] = data[k]; });
+  }catch(e){}
+}
+function bindChips(containerId, key){
+  document.querySelectorAll("#"+containerId+" .chip").forEach(ch=>{
+    ch.classList.toggle("on", state[key].includes(ch.dataset.v));
+    ch.addEventListener("click", ()=>{
+      const v = ch.dataset.v;
+      const i = state[key].indexOf(v);
+      if(i >= 0) state[key].splice(i,1); else state[key].push(v);
+      ch.classList.toggle("on");
+      save(); render();
+    });
+  });
 }
 function applyToForm(){
-FIELDS.forEach(k=>{
-const el = $("f-"+k);
-if(el) el.value = state.fields[k] || "";
-});
-document.querySelectorAll("#tone-chips.chip").forEach(ch=>{
-ch.classList.toggle("on", state.tones.includes(ch.dataset.tone));
-});
+  FIELDS.forEach(k=>{ const el = $("f-"+k); if(el) el.value = state.fields[k] || ""; });
+  [["tone-chips","tones"],["trait-chips","traits"],["ng-chips","ngs"]].forEach(pair=>{
+    document.querySelectorAll("#"+pair[0]+" .chip").forEach(ch=>{
+      ch.classList.toggle("on", state[pair[1]].includes(ch.dataset.v));
+    });
+  });
 }
 FIELDS.forEach(k=>{
-const el = $("f-"+k);
-el.addEventListener("input", ()=>{
-state.fields[k] = el.value;
-save(); render();
-});
-});
-document.querySelectorAll("#tone-chips.chip").forEach(ch=>{
-ch.addEventListener("click", ()=>{
-const t = ch.dataset.tone;
-const i = state.tones.indexOf(t);
-if(i >= 0) state.tones.splice(i,1); else state.tones.push(t);
-ch.classList.toggle("on");
-save(); render();
-});
+  const el = $("f-"+k);
+  el.addEventListener("input", ()=>{ state.fields[k] = el.value; save(); render(); });
+  el.addEventListener("change", ()=>{ state.fields[k] = el.value; save(); render(); });
 });
 function toast(msg){
-const el = $("toast");
-el.textContent = msg;
-el.classList.add("show");
-setTimeout(()=>el.classList.remove("show"), 1800);
+  const el = $("toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"), 1800);
 }
 $("btn-copy").addEventListener("click", async ()=>{
-const text = buildText();
-try{
-await navigator.clipboard.writeText(text);
-toast("コピーしました");
-}catch(e){
-const ta = document.createElement("textarea");
-ta.value = text; document.body.appendChild(ta);
-ta.select();
-try{ document.execCommand("copy"); toast("コピーしました");}
-catch(e2){ toast("コピーできませんでした");}
-document.body.removeChild(ta);
-}
+  const text = buildText();
+  try{ await navigator.clipboard.writeText(text); toast("コピーしました"); }
+  catch(e){
+    const ta = document.createElement("textarea");
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); toast("コピーしました"); }catch(e2){ toast("コピーできませんでした"); }
+    document.body.removeChild(ta);
+  }
 });
 $("btn-download").addEventListener("click", ()=>{
-const blob = new Blob([buildText()], {type:"text/plain;charset=utf-8"});
-const a = document.createElement("a");
-a.href = URL.createObjectURL(blob);
-a.download = "ai-profile.txt";
-a.click();
-URL.revokeObjectURL(a.href);
+  const blob = new Blob([buildText()], {type:"text/plain;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "ai-profile.txt";
+  a.click();
+  URL.revokeObjectURL(a.href);
 });
 $("btn-clear").addEventListener("click", ()=>{
-if(!confirm("入力内容を全部消しますか？")) return;
-state.fields = {}; state.tones = [];
-try{ localStorage.removeItem(KEY);}catch(e){}
-applyToForm(); render();
-toast("消去しました");
+  if(!confirm("入力内容を全部消しますか？")) return;
+  state.fields = {}; state.tones = []; state.traits = []; state.ngs = [];
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  applyToForm(); render();
+  toast("消去しました");
 });
 $("btn-sample").addEventListener("click", ()=>{
-state.fields = {
-"name":"サクラ", "call":"サクラ", "age":"20代", "area":"関西",
-"job":"カフェでアルバイトをしています",
-"like-food":"プリン\nオムライス", "like-hobby":"散歩\n音楽を聴くこと",
-"like-other":"", "ng-food":"辛いもの", "allergy":"",
-"avoid":"高額な提案は避けてほしい",
-"goal":"貯金して、来年旅行に行くこと",
-"rules":"提案は予算1万円以内で",
-"tone-free":"", "free":"猫を飼っています"
-};
-state.tones = ["タメ口で話してほしい","選択肢を出して提案してほしい"];
-save(); applyToForm(); render();
-toast("記入例を入れました");
+  state.fields = {
+    "name":"サクラ","call":"サクラ","age":"20代","area":"関西","birth":"2000-06-10","blood":"B型","mbti":"ENFP",
+    "job":"カフェでアルバイトをしています",
+    "like-food":"プリン\nオムライス","like-hobby":"散歩\n音楽を聴くこと","like-other":"",
+    "ng-food":"辛いもの","allergy":"","avoid":"高額な提案は避けてほしい","care":"",
+    "traits-free":"","goal":"貯金して、来年旅行に行くこと","rules":"提案は予算1万円以内で",
+    "tone-free":"","free":"猫を飼っています"
+  };
+  state.tones = ["タメ口で話してほしい","選択肢を出して提案してほしい"];
+  state.traits = ["好奇心旺盛","直感で動くタイプ"];
+  state.ngs = ["勝手に決めないでほしい","説教っぽくしないでほしい"];
+  save(); applyToForm(); render();
+  toast("記入例を入れました");
 });
 load();
 applyToForm();
+bindChips("tone-chips","tones");
+bindChips("trait-chips","traits");
+bindChips("ng-chips","ngs");
 render();
 </script>
 </body>
